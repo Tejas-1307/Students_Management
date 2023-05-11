@@ -2,6 +2,7 @@ package com.StudentCrud.Students.Controller;
 
 import com.StudentCrud.Students.Entity.Student;
 import com.StudentCrud.Students.Repository.StudentRepository;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -15,7 +16,7 @@ public class StudentController {
     private StudentRepository studentRepository;
 
     @PostMapping("saveStuds")
-    public String saveStuds(@RequestBody List<Student> student){
+    public String saveStuds(@RequestBody @Valid List<Student> student){
         studentRepository.saveAll(student);
         return "student saved";
     }
@@ -27,12 +28,12 @@ public class StudentController {
     }
 
     @GetMapping("getById/{id}")
-    public Optional<Student> getById(@PathVariable Integer id){
+    public Optional<Student> getById(@PathVariable @Valid Integer id){
         return studentRepository.findById(id);
     }
 
     @PutMapping("Update")
-    public String Update(@RequestBody Student student){
+    public String Update(@RequestBody @Valid Student student){
         Student student1 = studentRepository.getReferenceById(student.getId());
         student1.setName(student.getName());
         student1.setAddress(student.getAddress());
@@ -43,7 +44,7 @@ public class StudentController {
     }
 
     @DeleteMapping("delete/{id}")
-    public String Delete(@PathVariable("id") Integer id){
+    public String Delete(@PathVariable("id") @Valid Integer id){
         studentRepository.deleteById(id);
         return "record deleted";
     }
